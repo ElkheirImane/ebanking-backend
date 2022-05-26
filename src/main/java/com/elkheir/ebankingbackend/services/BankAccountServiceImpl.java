@@ -147,4 +147,6 @@ public class BankAccountServiceImpl implements BankAccountService{
                .orElseThrow(() -> new CustomerNotFoundException("Customer Not found"));
        return dtoMapper.fromCustomer(customer);
    }
+
+   public CustomerDTO
 }
