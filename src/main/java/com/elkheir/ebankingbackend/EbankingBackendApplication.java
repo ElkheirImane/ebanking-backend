@@ -1,5 +1,6 @@
 package com.elkheir.ebankingbackend;
 
+import com.elkheir.ebankingbackend.dtos.CustomerDTO;
 import com.elkheir.ebankingbackend.entities.*;
 import com.elkheir.ebankingbackend.enums.AccountStatus;
 import com.elkheir.ebankingbackend.enums.OperationType;
@@ -28,15 +29,14 @@ public class EbankingBackendApplication {
         SpringApplication.run(EbankingBackendApplication.class, args);
     }
 
-   // @Bean
+    @Bean
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService) {
         return args -> {
             Stream.of("Ayoub", "Imane", "Mohamed").forEach(name -> {
-                Customer customer = new Customer();
+                CustomerDTO customer = new CustomerDTO();
                 customer.setName(name);
                 customer.setEmail(name + "@gmail.com");
                 bankAccountService.saveCustomer(customer);
-
             });
             bankAccountService.listCustomers().forEach(customer -> {
                 try {
@@ -46,7 +46,7 @@ public class EbankingBackendApplication {
                     for (BankAccount bankAccount : bankAccounts) {
                         for (int i = 0; i < 10; i++) {
                             bankAccountService.credit(bankAccount.getId(), 10000 + Math.random() * 120000, "Credit");
-                            bankAccountService.debit(bankAccount.getId(), 1000 + Math.random() * 900, "Debit");
+                            bankAccountService.debit(bankAccount.getId(), 1000 + Math.random() * 9000, "Debit");
                         }
                     }
                 } catch (CustomerNotFoundException e) {
@@ -55,10 +55,11 @@ public class EbankingBackendApplication {
                     e.printStackTrace();
                 }
             });
+
         };
     }
 
-    @Bean
+    //@Bean
     CommandLineRunner start(CustomerRepository customerRepository,
                             BankAccountRepository bankAccountRepository,
                             AccountOperationRepository accountOperationRepository) {
