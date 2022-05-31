@@ -1,5 +1,6 @@
 package com.elkheir.ebankingbackend.dtos;
 
+import com.elkheir.ebankingbackend.entities.AccountOperation;
 import lombok.Data;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public class AccountHistoryDTO {
     private int currentPage;
     private int totalPages;
     private int pageSize;
-    private List<AccountHistoryDTO> accountHistoryDTOS;
+    private List<AccountOperationDTO> accountOperationDTOS;
 
 }
