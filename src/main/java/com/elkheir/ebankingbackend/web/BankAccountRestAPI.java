@@ -7,14 +7,12 @@ import com.elkheir.ebankingbackend.dtos.BankAccountDTO;
 import com.elkheir.ebankingbackend.entities.BankAccount;
 import com.elkheir.ebankingbackend.exceptions.BankAccountNotFoundException;
 import com.elkheir.ebankingbackend.services.BankAccountService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class BankAccountRestAPI {
     private BankAccountService bankAccountService;
     public BankAccountRestAPI(BankAccountService bankAccountService) {
