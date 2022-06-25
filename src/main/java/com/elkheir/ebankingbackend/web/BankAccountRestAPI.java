@@ -1,10 +1,9 @@
 package com.elkheir.ebankingbackend.web;
 
 
-import com.elkheir.ebankingbackend.dtos.AccountHistoryDTO;
-import com.elkheir.ebankingbackend.dtos.AccountOperationDTO;
-import com.elkheir.ebankingbackend.dtos.BankAccountDTO;
+import com.elkheir.ebankingbackend.dtos.*;
 import com.elkheir.ebankingbackend.entities.BankAccount;
+import com.elkheir.ebankingbackend.exceptions.BalanceNotSufficientException;
 import com.elkheir.ebankingbackend.exceptions.BankAccountNotFoundException;
 import com.elkheir.ebankingbackend.services.BankAccountService;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +40,26 @@ public class BankAccountRestAPI {
                                                @RequestParam(name ="size",defaultValue = "5") int size) throws BankAccountNotFoundException {
 
         return bankAccountService.getAccountHistory(accountId,page,size);
+
+    }
+    @PostMapping("/accounts/debit")
+    public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.debit(debitDTO.getAccountId(),debitDTO.getAmount(),debitDTO.getDescription());
+        return debitDTO;
+
+    }
+    @PostMapping("/accounts/credit")
+    public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.credit(creditDTO.getAccountId(),creditDTO.getAmount(),creditDTO.getDescription());
+        return creditDTO;
+
+    }
+    @PostMapping("/accounts/transfer")
+    public void TransferRequestDTO(@RequestBody TransferRequestDTO transferRequestDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.transfer(
+                transferRequestDTO.getAccountSource(),
+                transferRequestDTO.getAccountDestination(),
+                transferRequestDTO.getAmount());
 
     }
 }
