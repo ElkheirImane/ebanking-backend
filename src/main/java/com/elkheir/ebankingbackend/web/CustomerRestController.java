@@ -1,6 +1,8 @@
 package com.elkheir.ebankingbackend.web;
 
+import com.elkheir.ebankingbackend.dtos.CustomerBankAccount;
 import com.elkheir.ebankingbackend.dtos.CustomerDTO;
+import com.elkheir.ebankingbackend.exceptions.BankAccountNotFoundException;
 import com.elkheir.ebankingbackend.exceptions.CustomerNotFoundException;
 import com.elkheir.ebankingbackend.services.BankAccountService;
 import lombok.AllArgsConstructor;
@@ -45,6 +47,10 @@ public class CustomerRestController {
     public void deleteCustomer(@PathVariable Long id){
         bankAccountService.deleteCustomer(id);
 
+    }
+    @GetMapping("/customers/accounts/{id}")
+    public List<CustomerBankAccount> getCustomerAccounts(@PathVariable(name = "id") Long id) throws CustomerNotFoundException, BankAccountNotFoundException {
+        return bankAccountService.bankAccountByCustomer(id);
     }
 
 }

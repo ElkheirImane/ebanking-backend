@@ -18,6 +18,7 @@ import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -209,5 +210,27 @@ public class BankAccountServiceImpl implements BankAccountService{
         List<Customer> customers=customerRepository.searchCustomer("%"+keyword+"%");
         List<CustomerDTO> customerDTOS = customers.stream().map(cust -> dtoMapper.fromCustomer(cust)).collect(Collectors.toList());
         return customerDTOS;
+    }
+    @Override
+    public List<CustomerBankAccount> bankAccountByCustomer(Long customer_id) throws BankAccountNotFoundException {
+        List<BankAccount> bankAccounts = bankAccountRepository.findAll();
+        List<CustomerBankAccount> bankAccountList = new ArrayList<>();
+        for (BankAccount ba: bankAccounts){
+            Customer customer = ba.getCustomer();
+            if(customer.getId() == customer_id)
+            {
+
+                if(ba instanceof SavingAccount)
+                {
+                    bankAccountList.add(new CustomerBankAccount(ba.getId(), "SavingAccount"));
+                }
+                else
+                {
+                    bankAccountList.add(new CustomerBankAccount(ba.getId(), "CurrentAccount"));
+                }
+            }
+
+        }
+        return bankAccountList;
     }
 }
